@@ -1,0 +1,79 @@
+swagger: '2.0'
+info:
+  description: API for password recovery
+  version: "1.0.0"
+  title: Password Recovery API
+host: localhost:3005
+basePath: /
+schemes:
+  - http
+paths:
+  /check-email:
+    post:
+      summary: Check if email exists and send reset code
+      parameters:
+        - in: body
+          name: email
+          description: User's email
+          required: true
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+      responses:
+        200:
+          description: User ID returned and reset code sent
+          schema:
+            type: object
+            properties:
+              userId:
+                type: string
+        404:
+          description: Email not found
+        500:
+          description: Error sending email
+  /reset-password:
+    patch:
+      summary: Reset password
+      parameters:
+        - in: body
+          name: resetPassword
+          description: Reset password details
+          required: true
+          schema:
+            type: object
+            properties:
+              userId:
+                type: string
+              resetCode:
+                type: string
+              newPassword:
+                type: string
+      responses:
+        200:
+          description: Password updated successfully
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+        400:
+          description: Invalid or expired reset code
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+definitions:
+  User:
+    type: object
+    properties:
+      email:
+        type: string
+      password:
+        type: string
