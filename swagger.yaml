@@ -1,14 +1,14 @@
 swagger: '2.0'
 info:
-  description: API for password recovery
+  description: API for email verification and sending reset code
   version: "1.0.0"
-  title: Password Recovery API
+  title: Email Verification API
 host: localhost:3005
 basePath: /
 schemes:
   - http
 paths:
-  /check-email:
+  /email/check-email:
     post:
       summary: Check if email exists and send reset code
       parameters:
@@ -33,42 +33,6 @@ paths:
           description: Email not found
         500:
           description: Error sending email
-  /reset-password:
-    patch:
-      summary: Reset password
-      parameters:
-        - in: body
-          name: resetPassword
-          description: Reset password details
-          required: true
-          schema:
-            type: object
-            properties:
-              userId:
-                type: string
-              resetCode:
-                type: string
-              newPassword:
-                type: string
-      responses:
-        200:
-          description: Password updated successfully
-          schema:
-            type: object
-            properties:
-              success:
-                type: boolean
-              message:
-                type: string
-        400:
-          description: Invalid or expired reset code
-          schema:
-            type: object
-            properties:
-              success:
-                type: boolean
-              message:
-                type: string
 definitions:
   User:
     type: object
