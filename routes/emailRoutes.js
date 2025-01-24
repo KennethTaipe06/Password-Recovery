@@ -17,7 +17,7 @@ module.exports = (redisClient, producer) => {
 
         const resetCode = Math.floor(1000 + Math.random() * 9000).toString(); // Generar un código de 4 dígitos
         const hashedCode = await bcrypt.hash(resetCode, 10); // Encriptar el código
-        redisClient.setex(user._id.toString(), 180, hashedCode); // Código válido por 3 minutos
+        redisClient.setex(email, 180, resetCode); // Almacenar el código en Redis con el correo como clave
 
         try {
             await sendResetEmail(email, resetCode);
@@ -27,7 +27,7 @@ module.exports = (redisClient, producer) => {
                     { value: JSON.stringify({ userId: user._id, resetCode: hashedCode }) }
                 ]
             });
-            res.send({ userId: user._id });
+            res.send({ email });
         } catch (error) {
             console.error('Error sending email or Kafka message:', error);
             res.status(500).json({ error: 'Error sending email or Kafka message' });

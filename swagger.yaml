@@ -3,7 +3,7 @@ info:
   description: API for email verification and sending reset code
   version: "1.0.0"
   title: Email Verification API
-host: localhost:3005
+host: localhost:3006
 basePath: /
 schemes:
   - http
@@ -23,11 +23,11 @@ paths:
                 type: string
       responses:
         200:
-          description: User ID returned and reset code sent
+          description: Email returned and reset code sent
           schema:
             type: object
             properties:
-              userId:
+              email:
                 type: string
         404:
           description: Email not found
